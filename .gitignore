@@ -1,0 +1,5 @@
+*.o
+bin/*
+core.*
+test_forrst
+.sconsign*
