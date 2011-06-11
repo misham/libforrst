@@ -1,0 +1,8 @@
+Using SCons to build it.
+
+Currently this is just a skeleton without any functionality.
+
+# Dependencies
+  * cURL
+	* CUnit
+
