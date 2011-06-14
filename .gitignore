@@ -3,3 +3,5 @@ bin/*
 core.*
 test_forrst
 .sconsign*
+bin
+build
