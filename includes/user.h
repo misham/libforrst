@@ -1,5 +1,5 @@
 #ifndef USER_H__
-#define USER_H__
+#define USER_H__ 1
 
 #include <stdint.h>
 

@@ -1,5 +1,5 @@
 #ifndef POST_LIST_H__
-#define POST_LIST_H__
+#define POST_LIST_H__ 1
 
 #include <stdint.h>
 #include <stdlib.h>

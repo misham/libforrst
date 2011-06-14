@@ -1,5 +1,5 @@
 #ifndef POST_H_
-#define POST_H_
+#define POST_H_ 1
 
 #include <time.h>
 

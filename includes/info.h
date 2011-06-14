@@ -1,5 +1,5 @@
 #ifndef INFO_H__
-#define INFO_H__
+#define INFO_H__ 1
 
 #include <stdlib.h>
 
