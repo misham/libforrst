@@ -11,17 +11,14 @@
 #define SUCCESS 1
 #endif
 
-#define FORRST_API_URL "http://forrst.com/api/v2/"
-
-#define FORRST_API_CMD_STATS "stats"
-
 struct forrst_RawData {
   char* data ;
   size_t dataLen ;
 } ;
 
 int
-forrst_get( char* data, size_t dataLen ) ;
+forrst_get_data_from_api( char* url, size_t urlLen,
+                          char** data, size_t* dataLen ) ;
 
 #endif
 

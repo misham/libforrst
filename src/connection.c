@@ -29,35 +29,34 @@ forrst_connection_write_data( void* ptr, size_t size, size_t nmemb, void* data )
 
 
 int
-forrst_get_stats( char** data, size_t* dataLen ) {
+forrst_get_data_from_api( char* url, size_t urlLen,
+                          char** data, size_t* dataLen ) {
   char* local_data = NULL ;
   CURL* curl = curl_easy_init() ;
   int result = SUCCESS ;
-  char* stats_url = malloc( sizeof(char) *
-                            (strlen(FORRST_API_URL) +
-                             strlen(FORRST_API_CMD_STATS) + 1) ) ;
   struct forrst_RawData raw_data ;
+  CURLcode return_code ;
   //
-  if( NULL == data || NULL == dataLen || NULL == curl ) {
+  if( NULL == data || NULL == dataLen || NULL == curl ||
+      NULL == url || 0 == urlLen || urlLen != strlen(url) ) {
     curl_easy_cleanup( curl ) ;
+    curl_global_cleanup() ;
     result = FAIL ;
+  }
+  //
+  if( '\0' != url[urlLen] ) {
+    url[urlLen] = '\0' ;
   }
   //
   raw_data.data = malloc(1) ;
   raw_data.dataLen = 0 ;
   //
-  strncpy( stats_url, FORRST_API_URL, strlen(FORRST_API_URL) ) ;
-  strncat( stats_url,
-           FORRST_API_CMD_STATS,
-           (strlen(FORRST_API_URL) +
-            strlen(FORRST_API_CMD_STATS)) ) ;
-  //
-  curl_easy_setopt( curl, CURLOPT_URL, stats_url ) ;
+  curl_easy_setopt( curl, CURLOPT_URL, url ) ;
   curl_easy_setopt( curl, CURLOPT_WRITEFUNCTION, forrst_connection_write_data ) ;
   curl_easy_setopt( curl, CURLOPT_WRITEDATA, (void*)(&raw_data) ) ;
   curl_easy_setopt( curl, CURLOPT_USERAGENT, "libcurl-agent/1.0" ) ;
   //
-  curl_easy_perform( curl ) ;
+  return_code = curl_easy_perform( curl ) ;
   //
   curl_easy_cleanup( curl ) ;
   //
