@@ -10,7 +10,7 @@ CURL_CFLAGS = commands.getoutput( 'curl-config --cflags' )
 TEST_LDFLAGS = '-lcunit '
 
 INCLUDES = '-I ' + TOP + '/includes '
-LDFLAGS = CURL_LIBS
+LDFLAGS = '-ljson ' + CURL_LIBS
 WARNINGS = '-Wall -Wextra '
 
 CC = 'gcc'

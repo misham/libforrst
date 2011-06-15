@@ -14,22 +14,27 @@
 int
 main()
 {
-  char* data = NULL ;
-  size_t data_len = 0 ;
+  struct forrst_ResponseInfo response ;
+  struct forrst_Stats api_status ;
   int result = -1 ;
   //
-  result = forrst_get_stats( &data, &data_len ) ;
+  result = forrst_get_stats( &response, &api_status ) ;
   //
   if( SUCCESS == result ) {
-    printf( "%zu bytes received\n", data_len ) ;
-    printf( "Received data:\n" ) ;
-    printf( "%s\n", data ) ;
+    printf( "API Request Status:\n" ) ;
+    printf( "\tstatus: %d\n", response.status ) ;
+    printf( "\tresponseTime: %f\n", response.responseTime ) ;
+    printf( "\tenvironment: %d\n", response.environment ) ;
+    printf( "\tauthed: %d\n", response.authed ) ;
+    printf( "\tauthedAs: %s\n", response.authedAs ) ;
+    printf( "-------\n" ) ;
+    printf( "Stats:\n" ) ;
+    printf( "\trate limit: %d\n", api_status.rateLimit ) ;
+    printf( "\tcalls made: %d\n", api_status.callsMade ) ;
   }
   else {
     printf( "failed to get data\n" ) ;
   }
-  //
-  free( data ) ;
   //
   return EXIT_SUCCESS ;
 }
