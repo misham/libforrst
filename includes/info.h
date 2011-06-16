@@ -15,8 +15,6 @@
 #define FORRST_API_STAT_AUTHED_AS_STRING "authed_as"
 #define FORRST_API_STAT_ENV_STRING "env"
 
-#define FORRST_API_RESP_STRING "resp"
-
 #define FORRST_API_STAT_RATE_LIMIT_STRING "rate_limit"
 #define FORRST_API_STAT_CALLS_MADE_STRING "calls_made"
 

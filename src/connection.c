@@ -1,8 +1,8 @@
-
 #include <string.h>
 #include <malloc.h>
 #include <curl/curl.h>
 
+#include "common.h"
 #include "connection.h"
 
 size_t
@@ -33,7 +33,7 @@ forrst_get_data_from_api( char* url, size_t urlLen,
                           char** data, size_t* dataLen ) {
   char* local_data = NULL ;
   CURL* curl = curl_easy_init() ;
-  int result = SUCCESS ;
+  int result = FORRST_SUCCESS ;
   struct forrst_RawData raw_data ;
   CURLcode return_code ;
   //
@@ -41,7 +41,7 @@ forrst_get_data_from_api( char* url, size_t urlLen,
       NULL == url || 0 == urlLen || urlLen != strlen(url) ) {
     curl_easy_cleanup( curl ) ;
     curl_global_cleanup() ;
-    result = FAIL ;
+    result = FORRST_FAIL ;
   }
   //
   if( '\0' != url[urlLen] ) {
@@ -60,11 +60,13 @@ forrst_get_data_from_api( char* url, size_t urlLen,
   //
   curl_easy_cleanup( curl ) ;
   //
-  local_data = (char*)malloc( sizeof(char) * raw_data.dataLen ) ;
+  local_data = (char*)malloc( sizeof(char) * (raw_data.dataLen + 1) ) ;
   if( NULL == local_data ) {
-    result = FAIL ;
+    result = FORRST_FAIL ;
   }
   local_data = memcpy( local_data, raw_data.data, raw_data.dataLen ) ;
+  local_data[raw_data.dataLen] = '\0' ;
+  //
   *data = local_data ;
   *dataLen = raw_data.dataLen ;
   //

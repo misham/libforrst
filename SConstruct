@@ -37,15 +37,12 @@ test_src = Split("""
 								 tests/test_forrst.c
                  """)
 
-example_src = Split("""
-                    examples/stats.c
-                    """)
-
 #env.Program( target = test_exec,
 #						 source = test_src + src )
 
 # StaticLibrary( target = lib_name, source = src )
 # SharedLibrary( target = lib_name, source = src )
 
-env.Program( target = 'bin/stats', source = src + example_src ) ;
+env.Program( target = 'bin/stats', source = src + ['examples/stats.c'] )
+env.Program( target = 'bin/user', source = src + ['examples/user.c'] )
 

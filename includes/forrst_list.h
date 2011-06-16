@@ -5,11 +5,11 @@
 #include <stdlib.h>
 
 #ifndef FAIL
-#define FAIL -1
+#define FAIL 0
 #endif
 
 #ifndef SUCCESS
-#define SUCCESS 0
+#define SUCCESS 1
 #endif
 
 struct forrst_list {

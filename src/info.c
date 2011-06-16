@@ -1,3 +1,4 @@
+#include "common.h"
 #include "connection.h"
 #include "info.h"
 
@@ -7,19 +8,23 @@ forrst_get_stats( struct forrst_ResponseInfo* response,
   char* stats = NULL ;
   size_t stats_len = 0 ;
   int result = -1 ;
-  json_object* obj = NULL ;
-  json_object* stats_obj = NULL ;
   //
   if( NULL == response || NULL == apiStatus ) {
-    return FAIL ;
+    return FORRST_FAIL ;
   }
   //
   result = forrst_get_data_from_api( FORRST_API_STAT_URL,
                                      FORRST_API_STAT_URL_LEN,
                                      &stats, &stats_len ) ;
-  if( SUCCESS == result ) {
+  if( FORRST_SUCCESS == result ) {
+    json_object* obj = json_tokener_parse( stats ) ;
+    json_object* stats_obj = NULL ;
     json_object* value = NULL ;
-    obj = json_tokener_parse( stats ) ;
+    //
+    if( NULL == obj ) {
+      return FORRST_FAIL ;
+    }
+    //
     forrst_get_response_info( obj, response ) ;
     //
     stats_obj = json_object_object_get( obj, FORRST_API_RESP_STRING ) ;
@@ -34,10 +39,10 @@ forrst_get_stats( struct forrst_ResponseInfo* response,
     json_object_put( stats_obj ) ;
     json_object_put( obj ) ;
     //
-    return SUCCESS ;
+    return FORRST_SUCCESS ;
   }
   //
-  return FAIL ;
+  return FORRST_FAIL ;
 }
 
 int
@@ -46,7 +51,7 @@ forrst_get_response_info( json_object* obj, struct forrst_ResponseInfo* response
   char* value = NULL ;
   //
   if( NULL == obj || NULL == responseInfo ) {
-    return FAIL ;
+    return FORRST_FAIL ;
   }
   //
   cur_obj = json_object_object_get( obj, FORRST_API_STAT_STAT_STRING ) ;
@@ -90,6 +95,6 @@ forrst_get_response_info( json_object* obj, struct forrst_ResponseInfo* response
   responseInfo->authedAsLen = strlen( value ) ;
   json_object_put( cur_obj ) ;
   //
-  return SUCCESS ;
+  return FORRST_SUCCESS ;
 }
 
