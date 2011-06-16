@@ -14,8 +14,7 @@ enum forrst_user_type {
 } ;
 
 struct forrst_user {
-	char*				    id ;
-  size_t          idLen ;
+	uint64_t		    id ;
 	char*						username ;
 	size_t				  usernameLen ;
 	char*						name ;
