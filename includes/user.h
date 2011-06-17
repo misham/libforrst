@@ -46,9 +46,6 @@ struct forrst_user {
   size_t          photoSmallLen ;
   char*           photoThumb ;
   size_t          photoThumbLen ;
-	//
-  // :TODO: Comments?
-	//
 } ;
 
 int

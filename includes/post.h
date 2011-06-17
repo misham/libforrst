@@ -1,9 +1,14 @@
 #ifndef POST_H_
 #define POST_H_ 1
 
+#include <stdint.h>
 #include <time.h>
 
-#include "forrst_list.h"
+#include "info.h"
+
+#define FORRST_API_POST_SHOW_URL "http://forrst.com/api/v2/posts/show"
+#define FORRST_API_POST_ALL_URL "http://forrst.com/api/v2/posts/all"
+#define FORRST_API_POST_LIST_URL "http://forrst.com/api/v2/posts/list"
 
 enum forrst_post_type {
 	NO_TYPE,
@@ -35,7 +40,7 @@ struct forrst_post {
 	uint64_t						id ;
 	char*								tinyId ;
 	uint32_t						tinyIdLen ;
-	enum forrst_post_type			type ;
+	enum forrst_post_type	type ;
 	char*								postUrl ;
 	uint32_t						postUrlLen ;
 	struct tm						createdAt ;
@@ -54,25 +59,22 @@ struct forrst_post {
 	uint32_t						formattedDescriptionLen ;
 	uint32_t						likeCount ;
 	uint32_t						commentCount ;
-	struct forrst_list* comments ;
 	//
 	// :TODO: Store user data
 	// :TODO: Store snaps
+  // :TODO: Store comments
 	//
 } ;
 
 int
-forrst_show_posts( uint64_t id, char* tinyId,
-						uint32_t tinyIdLen, struct forrst_post** curPost  ) ;
+forrst_posts_get_by_id( uint64_t id,
+                        struct forrst_ResponseInfo* response,
+                        struct forrst_post* post ) ;
 
 int
-forrst_get_all_posts( uint64_t afterId, struct forrst_list** posts ) ;
-
-int
-forrst_get_posts_by_type( enum forrst_post_type type,
-									 enum forrst_post_sort_order orderBy,
-									 unsigned int page,
-									 struct forrst_list** posts ) ;
+forrst_posts_get_by_tinyid( char* tinyId, size_t tinyIdLen,
+                            struct forrst_ResponseInfo* response,
+                            struct forrst_post* post ) ;
 
 #endif
 
