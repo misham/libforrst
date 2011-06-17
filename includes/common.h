@@ -1,6 +1,8 @@
 #ifndef COMMON_H__
 #define COMMON_H__ 1
 
+#include <malloc.h>
+
 #define FORRST_FAIL 0
 #define FORRST_SUCCESS 1
 
@@ -15,6 +17,9 @@
 #define MAX_NUM_INTEGERS_IN_64_BIT_NUM 20
 
 #define FORRST_API_RESP_STRING "resp"
+
+int
+forrst_store_string( char* in, size_t inLen, char** out, size_t* outLen ) ;
 
 #endif
 

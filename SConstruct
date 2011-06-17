@@ -26,6 +26,7 @@ test_exec = 'test_forrst'
 lib_name = 'libforrs'
 
 src = Split("""
+            build/common.c
 						build/info.c
 						build/post.c
 						build/forrst_list.c

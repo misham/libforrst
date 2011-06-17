@@ -41,6 +41,8 @@ struct forrst_user {
 	//
 } ;
 
+int
+forrst_user_auth() ;
 
 int
 forrst_user_info_by_id( uint64_t userId,
