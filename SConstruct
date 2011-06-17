@@ -46,4 +46,5 @@ test_src = Split("""
 
 env.Program( target = 'bin/stats', source = src + ['examples/stats.c'] )
 env.Program( target = 'bin/user', source = src + ['examples/user.c'] )
+env.Program( target = 'bin/post', source = src + ['examples/post.c'] )
 

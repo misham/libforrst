@@ -7,8 +7,8 @@
 #include "connection.h"
 #include "user.h"
 
-int
-forrst_user_info_store_value( char* key, json_object* value,
+static int
+forrst_user_store_value( char* key, json_object* value,
                               struct forrst_user* user ) ;
 
 int
@@ -78,9 +78,10 @@ forrst_user_info_by_id( uint64_t userId,
   }
   //
   json_object_object_foreach( user_obj, key, val ) {
-    forrst_user_info_store_value( key, val, userInfo ) ;
+    forrst_user_store_value( key, val, userInfo ) ;
   }
   //
+  json_object_put( user_obj ) ;
   json_object_put( obj ) ;
   //
   return FORRST_SUCCESS ;
@@ -139,16 +140,17 @@ forrst_user_info_by_username( char* userName, size_t userNameLen,
   }
   //
   json_object_object_foreach( user_obj, key, val ) {
-    forrst_user_info_store_value( key, val, userInfo ) ;
+    forrst_user_store_value( key, val, userInfo ) ;
   }
   //
+  json_object_put( user_obj ) ;
   json_object_put( obj ) ;
   //
   return FORRST_SUCCESS ;
 }
 
-int
-forrst_user_info_store_value( char* key, json_object* value,
+static int
+forrst_user_store_value( char* key, json_object* value,
                               struct forrst_user* user ) {
   int result = FORRST_SUCCESS ;
   char* tmp = NULL ;
@@ -238,7 +240,7 @@ forrst_user_info_store_value( char* key, json_object* value,
   }
   else if( 0 == strcmp(key, "photos") ) {
     json_object_object_foreach( value, key, val ) {
-      forrst_user_info_store_value( key, val, user ) ;
+      forrst_user_store_value( key, val, user ) ;
     }
   }
   else if( 0 == strcmp(key, "xl_url") ) {

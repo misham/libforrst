@@ -18,50 +18,49 @@ enum forrst_post_type {
 	QUESTION
 } ;
 
-enum forrst_post_sort_order {
-	UNORDERED,
-	RECENT,
-	POPULAR,
-	BEST
-} ;
-
-struct forrst_comment {
-	uint64_t			id ;
-	char*					body ;
-	uint32_t			bodyLen ;
-	struct tm			createdAt ;
-	struct tm			updatedAt ;
-	//
-	// :TODO: link user
-	//
-} ;
-
 struct forrst_post {
-	uint64_t						id ;
-	char*								tinyId ;
-	uint32_t						tinyIdLen ;
+	uint64_t							id ;
+	char*									tinyId ;
+	size_t								tinyIdLen ;
 	enum forrst_post_type	type ;
-	char*								postUrl ;
-	uint32_t						postUrlLen ;
-	struct tm						createdAt ;
-	struct tm						updatedAt ;
-	int									isPublished ;
-	int									isPublic ;
-	char*								title ;
-	uint32_t						titleLen ;
-	char*								url ;
-	uint32_t						urlLen ;
-	char*								content ;
-	uint32_t						contentLen ;
-	char*								description ;
-	uint32_t						descriptionLen ;
-	char*								formattedDescription ;
-	uint32_t						formattedDescriptionLen ;
-	uint32_t						likeCount ;
-	uint32_t						commentCount ;
+	char*									postUrl ;
+	size_t								postUrlLen ;
+	struct tm							createdAt ;
+	struct tm							updatedAt ;
+	int										isPublished ;
+	int										isPublic ;
+	char*									title ;
+	size_t								titleLen ;
+	char*									url ;
+	size_t								urlLen ;
+	char*									content ;
+	size_t								contentLen ;
+	char*									formattedContent ;
+	size_t								formattedContentLen ;
+	char*									description ;
+	size_t								descriptionLen ;
+	char*									formattedDescription ;
+	size_t								formattedDescriptionLen ;
+	size_t								likeCount ;
+	size_t								commentCount ;
+	char*									tagString ;
+	size_t								tagStringLen ;
+	char*									snapsMegaUrl ;
+	size_t								snapsMegaUrlLen ;
+	char*									snapsKeithUrl ;
+	size_t								snapsKeithUrlLen ;
+	char*									snapsLargeUrl ;
+	size_t								snapsLargeUrlLen ;
+	char*									snapsMediumUrl ;
+	size_t								snapsMediumUrlLen ;
+	char*									snapsSmallUrl ;
+	size_t								snapsSmallUrlLen ;
+	char*									snapsThumUrl ;
+	size_t								snapsThumUrlLen ;
+	char*									snapsOriginalUrl ;
+	size_t								snapsOriginalUrlLen ;
 	//
 	// :TODO: Store user data
-	// :TODO: Store snaps
   // :TODO: Store comments
 	//
 } ;
