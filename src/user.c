@@ -12,6 +12,20 @@ forrst_user_info_store_value( char* key, json_object* value,
                               struct forrst_user* user ) ;
 
 int
+forrst_user_auth( char* login, size_t loginLen,
+                  char* password, size_t passwordLen ) {
+  if( NULL == login || NULL == password ||
+      0 == loginLen || 0 == passwordLen ||
+      strlen(login) != loginLen || strlen(password) != passwordLen ) {
+    return FORRST_FAIL ;
+  }
+  //
+  // :TODO:
+  //
+  return FORRST_FAIL ;
+}
+
+int
 forrst_user_info_by_id( uint64_t userId,
                         struct forrst_ResponseInfo* response,
 		                    struct forrst_user* userInfo ) {
@@ -223,7 +237,39 @@ forrst_user_info_store_value( char* key, json_object* value,
                                   &(user->tagsLen) ) ;
   }
   else if( 0 == strcmp(key, "photos") ) {
-    // :TODO:
+    json_object_object_foreach( value, key, val ) {
+      forrst_user_info_store_value( key, val, user ) ;
+    }
+  }
+  else if( 0 == strcmp(key, "xl_url") ) {
+    tmp = (char*)json_object_get_string( value ) ;
+    result = forrst_store_string( tmp, strlen(tmp),
+                                  &(user->photoXl),
+                                  &(user->photoXlLen) ) ;
+  }
+  else if( 0 == strcmp(key, "large_url") ) {
+    tmp = (char*)json_object_get_string( value ) ;
+    result = forrst_store_string( tmp, strlen(tmp),
+                                  &(user->photoLarge),
+                                  &(user->photoLargeLen) ) ;
+  }
+  else if( 0 == strcmp(key, "medium_url") ) {
+    tmp = (char*)json_object_get_string( value ) ;
+    result = forrst_store_string( tmp, strlen(tmp),
+                                  &(user->photoMedium),
+                                  &(user->photoMediumLen) ) ;
+  }
+  else if( 0 == strcmp(key, "small_url") ) {
+    tmp = (char*)json_object_get_string( value ) ;
+    result = forrst_store_string( tmp, strlen(tmp),
+                                  &(user->photoSmall),
+                                  &(user->photoSmallLen) ) ;
+  }
+  else if( 0 == strcmp(key, "thumb_url") ) {
+    tmp = (char*)json_object_get_string( value ) ;
+    result = forrst_store_string( tmp, strlen(tmp),
+                                  &(user->photoThumb),
+                                  &(user->photoThumbLen) ) ;
   }
   //
   return result ;

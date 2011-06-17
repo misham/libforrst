@@ -36,13 +36,23 @@ struct forrst_user {
 	int							inDirectory ;
 	char*						tags ;
 	size_t          tagsLen ;
+  char*           photoXl ;
+  size_t          photoXlLen ;
+  char*           photoLarge ;
+  size_t          photoLargeLen ;
+  char*           photoMedium ;
+  size_t          photoMediumLen ;
+  char*           photoSmall ;
+  size_t          photoSmallLen ;
+  char*           photoThumb ;
+  size_t          photoThumbLen ;
 	//
-	// :TODO: Photos?
+  // :TODO: Comments?
 	//
 } ;
 
 int
-forrst_user_auth() ;
+forrst_user_auth( char* login, size_t loginLen, char* password, size_t passwordLen ) ;
 
 int
 forrst_user_info_by_id( uint64_t userId,

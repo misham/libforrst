@@ -45,6 +45,12 @@ main()
     printf( "\ttwitter: %s\n", user.twitter ) ;
     printf( "\tin directory: %s\n", (user.inDirectory ? "true" : "false") ) ;
     printf( "\ttags: %s\n", user.tags ) ;
+    printf( "\tphotos:\n" ) ;
+    printf( "\t\txl_url: %s\n", user.photoXl ) ;
+    printf( "\t\tlarge_url: %s\n", user.photoLarge ) ;
+    printf( "\t\tmedium_url: %s\n", user.photoMedium ) ;
+    printf( "\t\tsmall_url: %s\n", user.photoSmall ) ;
+    printf( "\t\tthum_url: %s\n", user.photoThumb ) ;
   }
   else {
     printf( "failed to get data\n" ) ;
@@ -80,6 +86,12 @@ main()
     printf( "\ttwitter: %s\n", user.twitter ) ;
     printf( "\tin directory: %s\n", (user.inDirectory ? "true" : "false") ) ;
     printf( "\ttags: %s\n", user.tags ) ;
+    printf( "\tphotos:\n" ) ;
+    printf( "\t\txl_url: %s\n", user.photoXl ) ;
+    printf( "\t\tlarge_url: %s\n", user.photoLarge ) ;
+    printf( "\t\tmedium_url: %s\n", user.photoMedium ) ;
+    printf( "\t\tsmall_url: %s\n", user.photoSmall ) ;
+    printf( "\t\tthum_url: %s\n", user.photoThumb ) ;
   }
   else {
     printf( "failed to get data\n" ) ;
