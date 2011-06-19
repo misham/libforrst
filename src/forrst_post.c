@@ -3,9 +3,9 @@
 #include <stdio.h>
 #include <json/json.h>
 
-#include "common.h"
-#include "connection.h"
-#include "post.h"
+#include "forrst_common.h"
+#include "forrst_connection.h"
+#include "forrst_post.h"
 
 static int
 forrst_post_store_value( char* key, json_object* value,
@@ -65,8 +65,8 @@ forrst_posts_get_by_id( uint64_t id,
 		forrst_post_store_value( key, val, post ) ;
 	}
 	//
-	//json_object_put( post_obj ) ;
-	//json_object_put( obj ) ;
+	json_object_put( post_obj ) ;
+	json_object_put( obj ) ;
   //
   return FORRST_SUCCESS ;
 }

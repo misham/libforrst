@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#include "info.h"
+#include "forrst_info.h"
 
 #define FORRST_API_USER_INFO_URL "http://forrst.com/api/v2/users/info"
 

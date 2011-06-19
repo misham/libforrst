@@ -1,6 +1,6 @@
-#include "common.h"
-#include "connection.h"
-#include "info.h"
+#include "forrst_common.h"
+#include "forrst_connection.h"
+#include "forrst_info.h"
 
 int
 forrst_get_stats( struct forrst_ResponseInfo* response,

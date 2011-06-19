@@ -26,12 +26,12 @@ test_exec = 'test_forrst'
 lib_name = 'libforrs'
 
 src = Split("""
-            build/common.c
-						build/info.c
-						build/post.c
+            build/forrst_common.c
+            build/forrst_connection.c
 						build/forrst_list.c
-						build/user.c
-            build/connection.c
+						build/forrst_info.c
+						build/forrst_post.c
+						build/forrst_user.c
 						""")
 
 test_src = Split("""

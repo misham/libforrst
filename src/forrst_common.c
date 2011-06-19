@@ -1,6 +1,6 @@
 #include <string.h>
 
-#include "common.h"
+#include "forrst_common.h"
 
 int
 forrst_store_string( char* in, size_t inLen, char** out, size_t* outLen ) {

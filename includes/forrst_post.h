@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <time.h>
 
-#include "info.h"
+#include "forrst_info.h"
 
 #define FORRST_API_POST_SHOW_URL "http://forrst.com/api/v2/posts/show"
 #define FORRST_API_POST_ALL_URL "http://forrst.com/api/v2/posts/all"
@@ -41,8 +41,8 @@ struct forrst_post {
 	size_t								descriptionLen ;
 	char*									formattedDescription ;
 	size_t								formattedDescriptionLen ;
-	size_t								likeCount ;
-	size_t								commentCount ;
+  uint32_t							likeCount ;
+	uint32_t              commentCount ;
 	char*									tagString ;
 	size_t								tagStringLen ;
 	char*									snapsMegaUrl ;

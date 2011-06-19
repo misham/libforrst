@@ -3,9 +3,9 @@
 #include <malloc.h>
 #include <stdio.h>
 
-#include "common.h"
-#include "connection.h"
-#include "user.h"
+#include "forrst_common.h"
+#include "forrst_connection.h"
+#include "forrst_user.h"
 
 static int
 forrst_user_store_value( char* key, json_object* value,

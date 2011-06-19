@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "info.h"
+#include "forrst_info.h"
 
 #ifndef SUCCESS
 #define SUCCESS 1

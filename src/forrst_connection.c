@@ -2,8 +2,8 @@
 #include <malloc.h>
 #include <curl/curl.h>
 
-#include "common.h"
-#include "connection.h"
+#include "forrst_common.h"
+#include "forrst_connection.h"
 
 size_t
 forrst_connection_write_data( void* ptr, size_t size, size_t nmemb, void* data ){

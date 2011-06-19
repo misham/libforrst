@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "common.h"
-#include "user.h"
+#include "forrst_common.h"
+#include "forrst_user.h"
 
 #define TEST_USER_ID 26821
 #define TEST_USER_NAME "misham"
