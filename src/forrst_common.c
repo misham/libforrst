@@ -9,7 +9,7 @@ forrst_store_string( char* in, size_t inLen, char** out, size_t* outLen ) {
     return FORRST_FAIL ;
   }
   //
-  tmp = malloc( sizeof(char) * inLen ) ;
+  tmp = malloc( sizeof(char) * (inLen + 1) ) ;
   if( NULL == tmp ) {
     return FORRST_FAIL ;
   }
@@ -21,7 +21,7 @@ forrst_store_string( char* in, size_t inLen, char** out, size_t* outLen ) {
   tmp[inLen] = '\0' ;
   //
   *out = tmp ;
-  *outLen = strlen( *out ) ;
+  *outLen = strlen( tmp ) ;
   //
   return FORRST_SUCCESS ;
 }

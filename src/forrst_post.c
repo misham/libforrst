@@ -45,8 +45,10 @@ forrst_posts_get_by_id( uint64_t id,
                                      &post_info, &post_info_len ) ;
   if( FORRST_FAIL == result || NULL == post_info ||
       strlen(post_info) != post_info_len ) {
+		free( full_url ) ;
     return FORRST_FAIL ;
   }
+	free( full_url ) ;
   //
   obj = json_tokener_parse( post_info ) ;
   if( NULL == obj ) {
@@ -101,8 +103,10 @@ forrst_posts_get_by_tinyid( char* tinyId, size_t tinyIdLen,
                                      &post_info, &post_info_len ) ;
   if( FORRST_FAIL == result || NULL == post_info ||
       strlen(post_info) != post_info_len ) {
+		free( full_url ) ;
     return FORRST_FAIL ;
   }
+	free( full_url ) ;
   //
   obj = json_tokener_parse( post_info ) ;
   if( NULL == obj ) {
@@ -163,6 +167,7 @@ forrst_post_store_value( char* key, json_object* value,
 		else {
 			post->type = NO_TYPE ;
 		}
+		free( tmp ) ;
   }
 	else if( 0 == strcmp(key, "post_url") ) {
     tmp = (char*)json_object_get_string( value ) ;
@@ -171,8 +176,114 @@ forrst_post_store_value( char* key, json_object* value,
                                   &(post->postUrlLen) ) ;
   }
 	else if( 0 == strcmp(key, "created_at") ) {
+#warning Fix created_at
+		size_t i = 0 ;
+		size_t j = 0 ;
+		char val[4] ;
+		//
+		tmp = (char*)json_object_get_string( value ) ;
+		if( NULL == tmp ) {
+			return FORRST_FAIL ;
+		}
+		//
+		for( j = 0; j < 4; ++j ) {
+			val[j] = tmp[i] ;
+			++i ;
+		}
+		val[j] = '\0' ;
+		post->createdAt.tm_year = atoi( val ) - 1900 ;
+		//
+		for( j = 0; j < 2; ++j ) {
+			val[j] = tmp[i] ;
+			++i ;
+		}
+		val[j] = '\0' ;
+		post->createdAt.tm_mon = atoi( val ) ;
+		//
+		for( j = 0; j < 2; ++j ) {
+			val[j] = tmp[i] ;
+			++i ;
+		}
+		val[j] = '\0' ;
+		post->createdAt.tm_mday = atoi( val ) ;
+		//
+		for( j = 0; j < 2; ++j ) {
+			val[j] = tmp[i] ;
+			++i ;
+		}
+		val[j] = '\0' ;
+		post->createdAt.tm_hour = atoi( val ) ;
+		//
+		for( j = 0; j < 2; ++j ) {
+			val[j] = tmp[i] ;
+			++i ;
+		}
+		val[j] = '\0' ;
+		post->createdAt.tm_min = atoi( val ) ;
+		//
+		for( j = 0; j < 2; ++j ) {
+			val[j] = tmp[i] ;
+			++i ;
+		}
+		val[j] = '\0' ;
+		post->createdAt.tm_sec = atoi( val ) ;
+		//
+		free( tmp ) ;
   }
 	else if( 0 == strcmp(key, "updated_at") ) {
+#warning Fix updated_at
+		size_t i = 0 ;
+		size_t j = 0 ;
+		char val[4] ;
+		//
+		tmp = (char*)json_object_get_string( value ) ;
+		if( NULL == tmp ) {
+			return FORRST_FAIL ;
+		}
+		//
+		for( j = 0; j < 4; ++j ) {
+			val[j] = tmp[i] ;
+			++i ;
+		}
+		val[j] = '\0' ;
+		post->updatedAt.tm_year = atoi( val ) - 1900 ;
+		//
+		for( j = 0; j < 2; ++j ) {
+			val[j] = tmp[i] ;
+			++i ;
+		}
+		val[j] = '\0' ;
+		post->updatedAt.tm_mon = atoi( val ) ;
+		//
+		for( j = 0; j < 2; ++j ) {
+			val[j] = tmp[i] ;
+			++i ;
+		}
+		val[j] = '\0' ;
+		post->updatedAt.tm_mday = atoi( val ) ;
+		//
+		for( j = 0; j < 2; ++j ) {
+			val[j] = tmp[i] ;
+			++i ;
+		}
+		val[j] = '\0' ;
+		post->updatedAt.tm_hour = atoi( val ) ;
+		//
+		for( j = 0; j < 2; ++j ) {
+			val[j] = tmp[i] ;
+			++i ;
+		}
+		val[j] = '\0' ;
+		post->updatedAt.tm_min = atoi( val ) ;
+		//
+		for( j = 0; j < 2; ++j ) {
+			val[j] = tmp[i] ;
+			++i ;
+		}
+		val[j] = '\0' ;
+		post->updatedAt.tm_sec = atoi( val ) ;
+		//
+		free( tmp ) ;	
   }
 	else if( 0 == strcmp(key, "published") ) {
 		if( TRUE == json_object_get_boolean( value ) ) {
@@ -288,8 +399,136 @@ forrst_post_store_value( char* key, json_object* value,
 	}
 	else if( 0 == strcmp(key, "tags") ) {
 		// :TODO:
+		size_t i = 0 ;
+		json_object* tags_val = NULL ;
+		struct forrst_post_tag* tag = NULL ;
+		//
+		post->tagsArrayLen = json_object_array_length( value ) ;
+		post->tagsArray = malloc( sizeof(struct forrst_post_tag*) *
+															post->tagsArrayLen ) ;
+		if( NULL == post->tagsArray ) {
+			return FORRST_FAIL ;
+		}
+		//
+		for( i = 0; i < post->tagsArrayLen; ++i ) {
+			tag = (struct forrst_post_tag*)malloc( sizeof(struct forrst_post_tag) ) ;
+			if( NULL == tag ) {
+				return FORRST_FAIL ;
+			}
+			//
+			tags_val = json_object_array_get_idx( value, i ) ;
+			tmp = (char*)json_object_get_string( tags_val ) ;
+			if( NULL == tmp ) {
+				continue ;
+			}
+			//
+			forrst_store_string( tmp, strlen(tmp),
+			                     &(tag->tagValue),
+													 &(tag->tagValueLen) ) ;
+			//
+			post->tagsArray[i] = tag ;
+			json_object_put( tags_val ) ;
+			tag = NULL ;
+		} // */
 	}
 	//
 	return result ;
 }
+
+int
+forrst_posts_init_post( struct forrst_post* post ) {
+	if( NULL == post ) {
+		return FORRST_FAIL ;
+	}
+	//
+	post->id = 0 ;
+	post->tinyId = NULL ;
+	post->tinyIdLen = 0 ;
+	post->postUrl = NULL ;
+	post->postUrlLen = 0 ;
+	post->createdAt.tm_sec = 0 ;
+	post->createdAt.tm_min = 0 ;
+	post->createdAt.tm_hour = 0 ;
+	post->createdAt.tm_mday = 0 ;
+	post->createdAt.tm_mon = 0 ;
+	post->createdAt.tm_year = 0 ;
+	post->updatedAt.tm_sec = 0 ;
+	post->updatedAt.tm_min = 0 ;
+	post->updatedAt.tm_hour = 0 ;
+	post->updatedAt.tm_mday = 0 ;
+	post->updatedAt.tm_mon = 0 ;
+	post->updatedAt.tm_year = 0 ;
+	post->isPublished = 0 ;
+	post->isPublic = 0 ;
+	post->title = NULL ;
+	post->titleLen = 0 ;
+	post->url = NULL ;
+	post->urlLen = 0 ;
+	post->content = NULL ;
+	post->contentLen = 0 ;
+	post->formattedContent = NULL ;
+	post->formattedContentLen = 0 ;
+	post->description = NULL ;
+	post->descriptionLen = 0 ;
+	post->formattedDescription = NULL ;
+	post->formattedDescriptionLen = 0 ;
+	post->likeCount = 0 ;
+	post->commentCount = 0 ;
+	post->tagString = NULL ;
+	post->tagStringLen = 0 ;
+	post->tagsArray = NULL ;
+	post->tagsArrayLen = 0 ;
+	post->snapsMegaUrl = NULL ;
+	post->snapsMegaUrlLen = 0 ;
+	post->snapsKeithUrl = NULL ;
+	post->snapsKeithUrlLen = 0 ;
+	post->snapsLargeUrl = NULL ;
+	post->snapsLargeUrlLen = 0 ;
+	post->snapsMediumUrl = NULL ;
+	post->snapsMediumUrlLen = 0 ;
+	post->snapsSmallUrl = NULL ;
+	post->snapsSmallUrlLen = 0 ;
+	post->snapsThumUrl = NULL ;
+	post->snapsThumUrlLen = 0 ;
+	post->snapsOriginalUrl = NULL ;
+	post->snapsOriginalUrlLen = 0 ;
+	//
+	return FORRST_SUCCESS ;
+}
+
+int
+forrst_posts_free_post( struct forrst_post* post ) {
+	size_t i = 0 ;
+	if( NULL == post ) {
+		return FORRST_FAIL ;
+	}
+	//
+	free( post->tinyId ) ;
+	free( post->postUrl ) ;
+	free( post->title ) ;
+	if( LINK == post->type ) {
+		free( post->url ) ;
+	}
+	free( post->content ) ;
+	free( post->formattedContent ) ;
+	free( post->description ) ;
+	free( post->formattedDescription ) ;
+	free( post->tagString ) ;
+	if( SNAP == post->type ) {
+		free( post->snapsMegaUrl ) ;
+		free( post->snapsLargeUrl ) ;
+		free( post->snapsKeithUrl ) ;
+		free( post->snapsMegaUrl ) ;
+		free( post->snapsSmallUrl ) ;
+		free( post->snapsThumUrl ) ;
+		free( post->snapsOriginalUrl ) ;
+	}
+	for( i = 0; i < post->tagsArrayLen; ++i ) {
+		free( post->tagsArray[i] ) ;
+	}
+	free( post->tagsArray ) ;
+	//
+	return FORRST_SUCCESS ;
+}
+
 

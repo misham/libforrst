@@ -47,6 +47,9 @@ forrst_get_stats( struct forrst_ResponseInfo* response,
                   struct forrst_Stats* apiStatus ) ;
 
 int
+forrst_info_free_response( struct forrst_ResponseInfo* response ) ;
+
+int
 forrst_get_response_info( json_object* obj,
                           struct forrst_ResponseInfo* responseInfo ) ;
 

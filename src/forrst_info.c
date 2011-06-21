@@ -46,6 +46,18 @@ forrst_get_stats( struct forrst_ResponseInfo* response,
 }
 
 int
+forrst_info_free_response( struct forrst_ResponseInfo* response ) {
+	if( NULL == response ) {
+		return FORRST_FAIL ;
+	}
+	//
+	free( response->authedAs ) ;	
+	//
+	return FORRST_SUCCESS ;
+}
+
+
+int
 forrst_get_response_info( json_object* obj, struct forrst_ResponseInfo* responseInfo ) {
   json_object* cur_obj = NULL ;
   char* value = NULL ;
@@ -97,4 +109,5 @@ forrst_get_response_info( json_object* obj, struct forrst_ResponseInfo* response
   //
   return FORRST_SUCCESS ;
 }
+
 

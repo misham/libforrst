@@ -15,6 +15,8 @@ main()
   struct forrst_post post ;
   int result = -1 ;
   //
+	forrst_posts_init_post( &post ) ;
+	//
   result = forrst_posts_get_by_id( TEST_POST_ID, &response, &post ) ;
   //
   if( FORRST_SUCCESS == result ) {
@@ -34,8 +36,8 @@ main()
     printf( "\ttiny id: %s\n", post.tinyId ) ;
     printf( "\ttype: %d\n", post.type ) ;
     printf( "\tpost url: %s\n", post.postUrl ) ;
-    printf( "\tcreated at: :TODO:\n" ) ;
-    printf( "\tupdated at: :TODO:\n" ) ;
+    printf( "\tcreated at: %s\n", asctime(&(post.createdAt)) ) ;
+    printf( "\tupdated at: %s\n", asctime(&(post.updatedAt)) ) ;
     printf( "\tpublished: %s\n", (post.isPublished ? "true" : "false") ) ;
     printf( "\tpublic: %s\n", (post.isPublic ? "true" : "false") ) ;
     printf( "\ttitle: %s\n", post.title ) ;
@@ -54,6 +56,13 @@ main()
     printf( "\tlike count: %d\n", post.likeCount ) ;
     printf( "\tcomment count: %d\n", post.commentCount ) ;
     printf( "\ttag string: %s\n", post.tagString ) ;
+		if( post.tagsArrayLen > 0 ) {
+			size_t i = 0 ;
+			printf( "\ttags: \n" ) ;
+			for( i = 0; i < post.tagsArrayLen; ++i ) {
+				printf( "\t\t%s\n", post.tagsArray[i]->tagValue ) ;
+			}
+		}
     if( SNAP == post.type ) {
       printf( "\tsnaps:\n" ) ;
       printf( "\tmega url: %s\n", post.snapsMediumUrl ) ;
@@ -69,6 +78,8 @@ main()
     printf( "failed to get data\n" ) ;
   }
   //
+	forrst_posts_free_post( &post ) ;
+	forrst_info_free_response( &response ) ;
   //
   return EXIT_SUCCESS ;
 }
