@@ -10,6 +10,9 @@
 static int
 forrst_post_store_value( char* key, json_object* value,
                          struct forrst_post* post ) ;
+static int
+forrst_posts_populate_time( char* timeStamp, size_t timeStampLen,
+                            struct tm* result ) ;
 
 int
 forrst_posts_get_by_id( uint64_t id,
@@ -176,114 +179,24 @@ forrst_post_store_value( char* key, json_object* value,
                                   &(post->postUrlLen) ) ;
   }
 	else if( 0 == strcmp(key, "created_at") ) {
-#warning Fix created_at
-		size_t i = 0 ;
-		size_t j = 0 ;
-		char val[4] ;
-		//
 		tmp = (char*)json_object_get_string( value ) ;
 		if( NULL == tmp ) {
 			return FORRST_FAIL ;
 		}
 		//
-		for( j = 0; j < 4; ++j ) {
-			val[j] = tmp[i] ;
-			++i ;
-		}
-		val[j] = '\0' ;
-		post->createdAt.tm_year = atoi( val ) - 1900 ;
-		//
-		for( j = 0; j < 2; ++j ) {
-			val[j] = tmp[i] ;
-			++i ;
-		}
-		val[j] = '\0' ;
-		post->createdAt.tm_mon = atoi( val ) ;
-		//
-		for( j = 0; j < 2; ++j ) {
-			val[j] = tmp[i] ;
-			++i ;
-		}
-		val[j] = '\0' ;
-		post->createdAt.tm_mday = atoi( val ) ;
-		//
-		for( j = 0; j < 2; ++j ) {
-			val[j] = tmp[i] ;
-			++i ;
-		}
-		val[j] = '\0' ;
-		post->createdAt.tm_hour = atoi( val ) ;
-		//
-		for( j = 0; j < 2; ++j ) {
-			val[j] = tmp[i] ;
-			++i ;
-		}
-		val[j] = '\0' ;
-		post->createdAt.tm_min = atoi( val ) ;
-		//
-		for( j = 0; j < 2; ++j ) {
-			val[j] = tmp[i] ;
-			++i ;
-		}
-		val[j] = '\0' ;
-		post->createdAt.tm_sec = atoi( val ) ;
+    result = forrst_posts_populate_time( tmp, strlen(tmp), &(post->createdAt) ) ;
 		//
 		free( tmp ) ;
   }
 	else if( 0 == strcmp(key, "updated_at") ) {
-#warning Fix updated_at
-		size_t i = 0 ;
-		size_t j = 0 ;
-		char val[4] ;
-		//
 		tmp = (char*)json_object_get_string( value ) ;
 		if( NULL == tmp ) {
 			return FORRST_FAIL ;
 		}
+    //
+    result = forrst_posts_populate_time( tmp, strlen(tmp), &(post->updatedAt) ) ;
 		//
-		for( j = 0; j < 4; ++j ) {
-			val[j] = tmp[i] ;
-			++i ;
-		}
-		val[j] = '\0' ;
-		post->updatedAt.tm_year = atoi( val ) - 1900 ;
-		//
-		for( j = 0; j < 2; ++j ) {
-			val[j] = tmp[i] ;
-			++i ;
-		}
-		val[j] = '\0' ;
-		post->updatedAt.tm_mon = atoi( val ) ;
-		//
-		for( j = 0; j < 2; ++j ) {
-			val[j] = tmp[i] ;
-			++i ;
-		}
-		val[j] = '\0' ;
-		post->updatedAt.tm_mday = atoi( val ) ;
-		//
-		for( j = 0; j < 2; ++j ) {
-			val[j] = tmp[i] ;
-			++i ;
-		}
-		val[j] = '\0' ;
-		post->updatedAt.tm_hour = atoi( val ) ;
-		//
-		for( j = 0; j < 2; ++j ) {
-			val[j] = tmp[i] ;
-			++i ;
-		}
-		val[j] = '\0' ;
-		post->updatedAt.tm_min = atoi( val ) ;
-		//
-		for( j = 0; j < 2; ++j ) {
-			val[j] = tmp[i] ;
-			++i ;
-		}
-		val[j] = '\0' ;
-		post->updatedAt.tm_sec = atoi( val ) ;
-		//
-		free( tmp ) ;	
+		free( tmp ) ;
   }
 	else if( 0 == strcmp(key, "published") ) {
 		if( TRUE == json_object_get_boolean( value ) ) {
@@ -397,40 +310,6 @@ forrst_post_store_value( char* key, json_object* value,
                                   &(post->snapsOriginalUrl),
                                   &(post->snapsOriginalUrlLen) ) ;
 	}
-	else if( 0 == strcmp(key, "tags") ) {
-		// :TODO:
-		size_t i = 0 ;
-		json_object* tags_val = NULL ;
-		struct forrst_post_tag* tag = NULL ;
-		//
-		post->tagsArrayLen = json_object_array_length( value ) ;
-		post->tagsArray = malloc( sizeof(struct forrst_post_tag*) *
-															post->tagsArrayLen ) ;
-		if( NULL == post->tagsArray ) {
-			return FORRST_FAIL ;
-		}
-		//
-		for( i = 0; i < post->tagsArrayLen; ++i ) {
-			tag = (struct forrst_post_tag*)malloc( sizeof(struct forrst_post_tag) ) ;
-			if( NULL == tag ) {
-				return FORRST_FAIL ;
-			}
-			//
-			tags_val = json_object_array_get_idx( value, i ) ;
-			tmp = (char*)json_object_get_string( tags_val ) ;
-			if( NULL == tmp ) {
-				continue ;
-			}
-			//
-			forrst_store_string( tmp, strlen(tmp),
-			                     &(tag->tagValue),
-													 &(tag->tagValueLen) ) ;
-			//
-			post->tagsArray[i] = tag ;
-			json_object_put( tags_val ) ;
-			tag = NULL ;
-		} // */
-	}
 	//
 	return result ;
 }
@@ -476,8 +355,6 @@ forrst_posts_init_post( struct forrst_post* post ) {
 	post->commentCount = 0 ;
 	post->tagString = NULL ;
 	post->tagStringLen = 0 ;
-	post->tagsArray = NULL ;
-	post->tagsArrayLen = 0 ;
 	post->snapsMegaUrl = NULL ;
 	post->snapsMegaUrlLen = 0 ;
 	post->snapsKeithUrl = NULL ;
@@ -498,7 +375,6 @@ forrst_posts_init_post( struct forrst_post* post ) {
 
 int
 forrst_posts_free_post( struct forrst_post* post ) {
-	size_t i = 0 ;
 	if( NULL == post ) {
 		return FORRST_FAIL ;
 	}
@@ -523,12 +399,70 @@ forrst_posts_free_post( struct forrst_post* post ) {
 		free( post->snapsThumUrl ) ;
 		free( post->snapsOriginalUrl ) ;
 	}
-	for( i = 0; i < post->tagsArrayLen; ++i ) {
-		free( post->tagsArray[i] ) ;
-	}
-	free( post->tagsArray ) ;
 	//
 	return FORRST_SUCCESS ;
 }
 
+static int
+forrst_posts_populate_time( char* timeStamp, size_t timeStampLen,
+                            struct tm* result ) {
+  size_t i = 0 ;
+  size_t j = 0 ;
+  char val[4] ;
+  //
+  if( NULL == timeStamp || NULL == result ||
+      strlen(timeStamp) != timeStampLen ) {
+    return FORRST_FAIL ;
+  }
+  // Year
+  for( j = 0; j < 4; ++j ) {
+    val[j] = timeStamp[i] ;
+    ++i ;
+  }
+  ++i ;
+  val[j] = '\0' ;
+  result->tm_year = atoi( val ) - 1900 ;
+  // Month
+  for( j = 0; j < 2; ++j ) {
+    val[j] = timeStamp[i] ;
+    ++i ;
+  }
+  ++i ;
+  val[j] = '\0' ;
+  result->tm_mon = atoi( val ) - 1 ;
+  // Date
+  for( j = 0; j < 2; ++j ) {
+    val[j] = timeStamp[i] ;
+    ++i ;
+  }
+  ++i ;
+  val[j] = '\0' ;
+  result->tm_mday = atoi( val ) ;
+  // Hour
+  for( j = 0; j < 2; ++j ) {
+    val[j] = timeStamp[i] ;
+    ++i ;
+  }
+  ++i ;
+  val[j] = '\0' ;
+  result->tm_hour = atoi( val ) ;
+  // Minute
+  for( j = 0; j < 2; ++j ) {
+    val[j] = timeStamp[i] ;
+    ++i ;
+  }
+  ++i ;
+  val[j] = '\0' ;
+  result->tm_min = atoi( val ) - 1 ;
+  // Seconds
+  for( j = 0; j < 2; ++j ) {
+    val[j] = timeStamp[i] ;
+    ++i ;
+  }
+  ++i ;
+  val[j] = '\0' ;
+  result->tm_sec = atoi( val ) - 1 ;
+  //
+  return FORRST_SUCCESS ;
+}
 

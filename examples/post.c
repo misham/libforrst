@@ -14,6 +14,7 @@ main()
   struct forrst_ResponseInfo response ;
   struct forrst_post post ;
   int result = -1 ;
+  char time_stamp[20] ;
   //
 	forrst_posts_init_post( &post ) ;
 	//
@@ -36,8 +37,13 @@ main()
     printf( "\ttiny id: %s\n", post.tinyId ) ;
     printf( "\ttype: %d\n", post.type ) ;
     printf( "\tpost url: %s\n", post.postUrl ) ;
-    printf( "\tcreated at: %s\n", asctime(&(post.createdAt)) ) ;
-    printf( "\tupdated at: %s\n", asctime(&(post.updatedAt)) ) ;
+    //
+    strftime( time_stamp, 20, "%H:%M:%S %m/%d/%Y", &(post.createdAt) ) ;
+    printf( "\tcreated at: %s\n", time_stamp ) ;
+    //
+    strftime( time_stamp, 20, "%H:%M:%S %m/%d/%Y", &(post.updatedAt) ) ;
+    printf( "\tupdated at: %s\n", time_stamp ) ;
+    //
     printf( "\tpublished: %s\n", (post.isPublished ? "true" : "false") ) ;
     printf( "\tpublic: %s\n", (post.isPublic ? "true" : "false") ) ;
     printf( "\ttitle: %s\n", post.title ) ;
@@ -56,13 +62,6 @@ main()
     printf( "\tlike count: %d\n", post.likeCount ) ;
     printf( "\tcomment count: %d\n", post.commentCount ) ;
     printf( "\ttag string: %s\n", post.tagString ) ;
-		if( post.tagsArrayLen > 0 ) {
-			size_t i = 0 ;
-			printf( "\ttags: \n" ) ;
-			for( i = 0; i < post.tagsArrayLen; ++i ) {
-				printf( "\t\t%s\n", post.tagsArray[i]->tagValue ) ;
-			}
-		}
     if( SNAP == post.type ) {
       printf( "\tsnaps:\n" ) ;
       printf( "\tmega url: %s\n", post.snapsMediumUrl ) ;

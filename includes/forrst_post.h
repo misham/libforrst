@@ -50,8 +50,6 @@ struct forrst_post {
 	uint32_t									commentCount ;
 	char*											tagString ;
 	size_t										tagStringLen ;
-	struct forrst_post_tag**  tagsArray ;
-	size_t										tagsArrayLen ;
 	char*											snapsMegaUrl ;
 	size_t										snapsMegaUrlLen ;
 	char*											snapsKeithUrl ;
