@@ -86,5 +86,10 @@ forrst_posts_get_by_tinyid( char* tinyId, size_t tinyIdLen,
                             struct forrst_ResponseInfo* response,
                             struct forrst_post* post ) ;
 
+int
+forrst_posts_get_all( struct forrst_ResponseInfo* response,
+                      struct forrst_post* post,
+                      uint64_t afterId ) ;
+
 #endif
 
